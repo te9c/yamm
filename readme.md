@@ -11,7 +11,7 @@ Some of its features:
  - TUI for browsing your library
 
 YAMM is lightweight and tries to be as simple as possible. It doesn't have any
-daemon, background tasks nor background tasks. Everything is contained within
+daemon, background server nor tasks. Everything is contained within
 one simple utility - `yamm` executable.
 
 For now it is targeting `linux`.
