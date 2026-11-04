@@ -1,0 +1,18 @@
+# Go build outputs
+/yamm
+/yamm.exe
+/bin/
+/build/
+/dist/
+*.test
+
+# Test coverage
+/coverage/
+/coverage.out
+/coverage.html
+
+# OS and editor temporary files
+.DS_Store
+*.swp
+*.swo
+*~
