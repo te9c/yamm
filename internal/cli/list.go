@@ -19,28 +19,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package cmd
+package cli
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "yamm",
-	Short: "Simple tool to manage your media library",
-	Long:  `yamm helps you organize and mangage your media.`,
-}
-
-func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
-	}
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List media library",
+	Long:  `Not Implemented`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("list called")
+	},
 }
 
 func init() {
-	cfgPath := ""
-	rootCmd.PersistentFlags().StringVar(&cfgPath, "config", "", "config file (default is $HOME/.yamm.yaml)")
+	rootCmd.AddCommand(listCmd)
+
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

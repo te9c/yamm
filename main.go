@@ -21,8 +21,8 @@ THE SOFTWARE.
 */
 package main
 
-import "yamm/cmd"
+import cli "yamm/internal/cli"
 
 func main() {
-	cmd.Execute()
+	cli.Execute()
 }

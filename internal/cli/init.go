@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package cmd
+package cli
 
 import (
 	"fmt"
@@ -27,25 +27,25 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var importCmd = &cobra.Command{
-	Use:   "import",
-	Short: "Import media",
+var initCmd = &cobra.Command{
+	Use:   "init",
+	Short: "Initialize yamm database",
 	Long:  `Not Implemented`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("import called")
+		fmt.Println("init called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(importCmd)
+	rootCmd.AddCommand(initCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// importCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// importCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

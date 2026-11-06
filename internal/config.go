@@ -19,33 +19,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package cmd
+package internal
 
-import (
-	"fmt"
-
-	"github.com/spf13/cobra"
-)
-
-var browseCmd = &cobra.Command{
-	Use:   "browse",
-	Short: "Open TUI for browsing your library",
-	Long:  `Not Implemented`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("browse called")
-	},
+type MediaStorage struct {
+	path string
+	name string
 }
 
-func init() {
-	rootCmd.AddCommand(browseCmd)
+type MediaLibrary struct {
+	path string
+	name string
+}
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// browseCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// browseCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+type Config struct {
+	config_directory  string
+	catalog_directory string
+	MediaStorages     []string
+	MediaLibraries    []string
 }

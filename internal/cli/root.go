@@ -19,9 +19,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package main
+package cli
 
-type Config struct {
-	config_directory  string
-	catalog_directory string
+import (
+	"os"
+
+	"github.com/spf13/cobra"
+)
+
+var rootCmd = &cobra.Command{
+	Use:   "yamm",
+	Short: "Simple tool to manage your media library",
+	Long:  `yamm helps you organize and mangage your media.`,
+}
+
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
+}
+
+func init() {
+	cfgPath := ""
+	rootCmd.PersistentFlags().StringVar(&cfgPath, "config", "", "config file (default is $HOME/.yamm.yaml)")
 }
