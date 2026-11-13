@@ -66,7 +66,7 @@ func InitYamm(path string, apply bool) (string, string, error) {
 }
 
 func createDefaultConfig(path string) error {
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0611)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)
 	if err != nil {
 		return fmt.Errorf("create configuration %q: %w", path, err)
 	}
