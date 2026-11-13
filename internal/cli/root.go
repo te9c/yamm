@@ -41,6 +41,5 @@ func Execute() {
 }
 
 func init() {
-	cfgPath := ""
-	rootCmd.PersistentFlags().StringVar(&cfgPath, "config", "", "config file (default is $HOME/.yamm.yaml)")
+	rootCmd.PersistentFlags().String("config", "", "config file (default $XDG_CONFIG_HOME/yamm/config.yaml or $HOME/.config/yamm/config.yaml)")
 }

@@ -24,28 +24,41 @@ package cli
 import (
 	"fmt"
 
+	"yamm/internal/app"
+
 	"github.com/spf13/cobra"
 )
 
-var initCmd = &cobra.Command{
-	Use:   "init",
-	Short: "Initialize yamm database",
-	Long:  `Not Implemented`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
-	},
+func newInitCmd() *cobra.Command {
+	var apply, dryRun bool
+	cmd := &cobra.Command{
+		Use:   "init",
+		Short: "Create the default configuration",
+		Long:  "Preview the default configuration and its path. Use --apply to create it without overwriting an existing destination.",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			path, err := cmd.Flags().GetString("config")
+			if err != nil {
+				return err
+			}
+			path, contents, err := app.InitYamm(path, apply)
+			if err != nil {
+				return err
+			}
+			if apply {
+				_, err = fmt.Fprintf(cmd.OutOrStdout(), "Created configuration: %s\n", path)
+			} else {
+				_, err = fmt.Fprintf(cmd.OutOrStdout(), "Would create configuration: %s\n\n%s", path, contents)
+			}
+			return err
+		},
+	}
+	cmd.Flags().BoolVar(&apply, "apply", false, "Create the default configuration")
+	cmd.Flags().BoolVar(&dryRun, "dry-run", false, "Preview without creating files or directories")
+	cmd.MarkFlagsMutuallyExclusive("dry-run", "apply")
+	return cmd
 }
 
 func init() {
-	rootCmd.AddCommand(initCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(newInitCmd())
 }
