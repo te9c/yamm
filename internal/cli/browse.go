@@ -22,30 +22,48 @@ THE SOFTWARE.
 package cli
 
 import (
+	"errors"
 	"fmt"
+	"os"
+
+	"yamm/internal/tui"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/term"
 )
 
-var browseCmd = &cobra.Command{
-	Use:   "browse",
-	Short: "Open TUI for browsing your library",
-	Long:  `Not Implemented`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("browse called")
-	},
+func newBrowseCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "browse",
+		Short: "Open TUI for browsing your library",
+		Long:  "Open the TUI browser. Press q to quit or Ctrl-C to cancel.",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if err := cobra.NoArgs(cmd, args); err != nil {
+				return &exitError{code: 2, err: err}
+			}
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cmd.SilenceUsage = true
+			if !term.IsTerminal(int(os.Stdin.Fd())) || !term.IsTerminal(int(os.Stdout.Fd())) {
+				return &exitError{code: 2, err: errors.New("browse requires terminal input and output")}
+			}
+			if err := tui.Run(); err != nil {
+				if errors.Is(err, tui.ErrCancelled) {
+					cmd.SilenceErrors = true
+					return &exitError{code: 130, err: err}
+				}
+				return &exitError{code: 6, err: fmt.Errorf("start terminal UI: %w", err)}
+			}
+			return nil
+		},
+	}
+	cmd.SetFlagErrorFunc(func(cmd *cobra.Command, err error) error {
+		return &exitError{code: 2, err: err}
+	})
+	return cmd
 }
 
 func init() {
-	rootCmd.AddCommand(browseCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// browseCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// browseCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(newBrowseCmd())
 }

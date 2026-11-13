@@ -22,6 +22,7 @@ THE SOFTWARE.
 package cli
 
 import (
+	"errors"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -36,9 +37,22 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
+		var exitErr *exitError
+		if errors.As(err, &exitErr) {
+			os.Exit(exitErr.code)
+		}
 		os.Exit(1)
 	}
 }
+
+type exitError struct {
+	code int
+	err  error
+}
+
+func (e *exitError) Error() string { return e.err.Error() }
+
+func (e *exitError) Unwrap() error { return e.err }
 
 func init() {
 	rootCmd.PersistentFlags().String("config", "", "config file (default $XDG_CONFIG_HOME/yamm/config.yaml or $HOME/.config/yamm/config.yaml)")
